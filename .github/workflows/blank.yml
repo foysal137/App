@@ -52,10 +52,10 @@ jobs:
             # Generate gradlew if still not found
             echo "📝 Generating Gradle wrapper..."
             cd jarvis-lite-src
-            gradle wrapper --gradle-version 8.5 || {
+            gradle wrapper --gradle-version 8.7 || {
               echo "⚠️  gradle command not available, installing..."
               apt-get update -qq && apt-get install -y -qq gradle
-              gradle wrapper --gradle-version 8.5
+              gradle wrapper --gradle-version 8.7
             }
             cd ..
             chmod +x jarvis-lite-src/gradlew
