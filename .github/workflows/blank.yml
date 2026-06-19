@@ -48,16 +48,29 @@ jobs:
               rm -rf jarvis-lite-src/jarvis-lite
               echo "✅ Moved nested project to root"
             fi
+            
+            # Generate gradlew if still not found
+            echo "📝 Generating Gradle wrapper..."
+            cd jarvis-lite-src
+            gradle wrapper --gradle-version 8.5 || {
+              echo "⚠️  gradle command not available, installing..."
+              apt-get update -qq && apt-get install -y -qq gradle
+              gradle wrapper --gradle-version 8.5
+            }
+            cd ..
+            chmod +x jarvis-lite-src/gradlew
+            echo "✅ Generated and made gradlew executable"
           else
             echo "✅ Found gradlew at: $GRADLEW_PATH"
+            chmod +x "$GRADLEW_PATH"
           fi
           
-          # Make sure gradlew exists and is executable
+          # Verify gradlew exists and is executable
           if [ -f jarvis-lite-src/gradlew ]; then
-            chmod +x jarvis-lite-src/gradlew
-            echo "✅ gradlew is now executable"
+            echo "✅ gradlew is ready"
+            ls -la jarvis-lite-src/gradlew
           else
-            echo "❌ Still cannot find gradlew after extraction"
+            echo "❌ Still cannot find gradlew after all attempts"
             ls -la jarvis-lite-src/
             exit 1
           fi
